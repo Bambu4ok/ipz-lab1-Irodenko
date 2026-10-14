@@ -1,1 +1,21 @@
+@startuml
+title Сервер: Загальний процес processData()
 
+start
+:Створити порожні списки readings та errors;
+while (Є необроблені рядки у списку?) is (так)
+  :Зчитати наступний рядок;
+  if (Рядок порожній?) then (так)
+    :Пропустити рядок;
+  else (ні)
+    if (Рядок успішно парситься через fromCsv?) then (так)
+      :Додати об'єкт UtilityReading до readings;
+    else (ні)
+      :Зафіксувати помилку у список errors;
+    endif
+  endif
+endwhile (ні)
+:Обчислити validCount, totalConsumption, totalCost, maxConsumption;
+:Створити record UtilitySummary;
+stop
+@enduml
