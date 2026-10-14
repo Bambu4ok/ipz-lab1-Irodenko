@@ -1,1 +1,26 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
 
+actor "Клієнтський модуль" as Client
+actor "База даних / Сховище" as Storage
+
+rectangle "Серверний модуль / Бізнес-логіка" {
+  usecase "Зчитати вхідні рядки CSV" as UC_ReadCSV
+  usecase "Парсити CSV-рядок (fromCsv)" as UC_Parse
+  usecase "Перевірити інваріанти (Валідація)" as UC_Validate
+  usecase "Обчислити вартість послуги" as UC_CalcCost
+  usecase "Агрегувати статистику (Record)" as UC_Aggregate
+  usecase "Зформувати текстовий звіт" as UC_GenReport
+  usecase "Зафіксувати помилки парсингу" as UC_LogErrors
+}
+
+Client --> UC_ReadCSV
+UC_ReadCSV --> UC_Parse
+UC_Parse .> UC_Validate : <<include>>
+UC_Validate .> UC_CalcCost : <<include>>
+UC_Validate ..> UC_LogErrors : <<extends>>
+UC_CalcCost --> UC_Aggregate
+UC_Aggregate --> UC_GenReport
+UC_GenReport --> Storage : <<save>>
+@enduml
