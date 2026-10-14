@@ -1,1 +1,20 @@
+@startuml
+title Сервер: Формування підсумкового звіту
 
+start
+:Отримати record UtilitySummary та список errors;
+:Ініціалізувати StringBuilder;
+:Додати заголовок звіту;
+:Записати validCount, totalConsumption, totalCost, maxConsumption (Locale.ROOT);
+:Записати кількість помилкових рядків;
+if (Список errors не порожній?) then (так)
+  :Додати секцію "Деталі помилок:";
+  while (Є помилки у списку?) is (так)
+    :Додати рядок помилки з її номером;
+  endwhile (ні)
+else (ні)
+endif
+:Перетворити StringBuilder у String;
+:Повернути підсумковий текст звіту;
+stop
+@enduml
