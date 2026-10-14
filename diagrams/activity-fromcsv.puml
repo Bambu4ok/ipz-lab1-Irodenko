@@ -1,1 +1,27 @@
+@startuml
+title Сервер: Парсинг та валідація UtilityReading (fromCsv)
 
+start
+:Отримати рядок CSV;
+:Розбити рядок за розділювачем ";";
+if (Кількість полів == 4?) then (так)
+  :Видалити пробіли (.trim());
+  if (Формат чисел коректний?) then (так)
+    :Парсити consumption та tariff у double;
+    if (Назва/дата порожні АБО значення < 0?) then (так)
+      :Кинути IllegalArgumentException ("Некоректні значення/інваріанти");
+      stop
+    else (ні)
+      :Створити об'єкт UtilityReading;
+      :Повернути екземпляр сутності;
+    endif
+  else (ні)
+    :Кинути IllegalArgumentException ("Помилка формату числа");
+    stop
+  endif
+else (ні)
+  :Кинути IllegalArgumentException ("Некоректна кількість полів");
+  stop
+endif
+stop
+@enduml
